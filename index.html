@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>11.20 서울 데이트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0f1215);--ink:light-dark(#14171a,#eef1f4);--mute:light-dark(#6b7480,#98a2ad);--line:light-dark(#e6eaee,#262c33);--card:light-dark(#f5f7f9,#171c21);--am:light-dark(#2b8ad6,#5fb0f2);--pm:light-dark(#12507f,#8fc1ea);--ev:light-dark(#15181c,#e9edf2);--red:light-dark(#d1432a,#ff7d61)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip;padding-bottom:env(safe-area-inset-bottom)}
+a{color:inherit}
+.col{max-width:680px;margin:0 auto;padding:0 max(18px,4vw,env(safe-area-inset-left))}
+nav{position:sticky;top:0;z-index:1000;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+nav .col{display:flex;gap:4px;overflow-x:auto}
+nav a{flex:none;padding:12px 10px;font:700 15px Lexend,sans-serif;text-decoration:none;color:var(--mute)}
+.hero{padding:44px 0 8px}
+.kick{font:700 14px Lexend,sans-serif;color:var(--am);margin:0 0 4px}
+.lab{margin:0;font-weight:700;font-size:15px}
+h1{font-size:clamp(34px,8vw,48px);line-height:1.1;letter-spacing:-.03em;margin:14px 0;font-weight:900}
+.lead{margin:0;color:var(--mute)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px}
+.stat{background:var(--card);border-radius:14px;padding:14px 14px 12px}
+.stat b{display:block;font:800 clamp(22px,5.4vw,28px)/1.1 Lexend,"Noto Sans KR",sans-serif;letter-spacing:-.02em;white-space:nowrap}
+.stat span{font-size:13px;color:var(--mute)}
+.plan{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.plan button{font:inherit;font-size:15px;min-height:48px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;padding:6px 10px;line-height:1.3}
+.plan button small{display:block;font-size:13px;color:var(--mute)}
+.plan button[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.plan button[aria-pressed=true] small{color:var(--bg);opacity:.75}
+button:focus-visible,a:focus-visible{outline:3px solid var(--am);outline-offset:2px}
+section{padding:44px 0 4px;scroll-margin-top:48px}
+h2{font:800 34px/1.1 Lexend,sans-serif;letter-spacing:-.02em;margin:0}
+h2 i{font-style:normal;color:var(--am)}
+.hint{margin:4px 0 18px;color:var(--mute);font-size:15px}
+.today{list-style:none;margin:0;padding:0}
+.today li{display:grid;grid-template-columns:4.2em minmax(0,1fr);gap:14px;padding:11px 12px;border-radius:10px}
+.today li.w{background:color-mix(in srgb,var(--am) 12%,transparent)}
+.today time{font:700 17px Lexend,sans-serif;white-space:nowrap}
+.today li.w time{color:var(--am)}
+.mapcard{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--bg)}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:6px;background:var(--card)}
+.tabs button{font:inherit;border:0;background:transparent;color:var(--mute);border-radius:10px;min-height:48px;cursor:pointer;line-height:1.25;padding:4px}
+.tabs button b{display:block;font-size:15px;color:var(--ink)}
+.tabs button small{font-size:13px}
+.tabs button[aria-pressed=true]{background:var(--bg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.tabs button[aria-pressed=true] b{color:var(--am)}
+.mapwrap{position:relative}
+#map{height:min(70vh,560px);background:#eef0ee}
+.me{position:absolute;right:12px;top:12px;z-index:500;font:700 14px "Noto Sans KR",sans-serif;border:0;border-radius:999px;padding:10px 16px;background:#fff;color:#14171a;box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer;min-height:44px}
+.me[aria-pressed=true]{background:#2b8ad6;color:#fff}
+.sum{padding:14px 16px 16px;border-top:1px solid var(--line)}
+.sum .big{font:800 30px/1 Lexend,sans-serif;letter-spacing:-.02em;margin-right:8px}
+.leg{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:13px;color:var(--mute)}
+.leg span::before{content:"";display:inline-block;width:18px;height:4px;border-radius:2px;margin-right:6px;vertical-align:3px;background:var(--c)}
+.leg .d::before{background:repeating-linear-gradient(90deg,var(--c) 0 4px,transparent 4px 7px)}
+.sum p{margin:8px 0 0;font-size:13px;color:var(--mute)}
+.ln{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ln.m{stroke:var(--am)}.ln.a{stroke:var(--pm)}.ln.e{stroke:var(--ev)}.ln.sub{stroke:#7b8590}
+.ln.off{opacity:.2}
+.pinI{width:28px;height:28px}
+.nvpop{font:14px/1.5 "Noto Sans KR",sans-serif;padding:12px 14px;min-width:210px;color:#14171a}
+.nvpop b{font-size:15px}
+.nvpop a{display:block;margin-top:4px;color:#12507f;font-weight:500}
+.pinI div{position:relative;width:28px;height:28px}
+.pinI i{flex:none;width:28px;height:28px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;color:#fff;font:700 13px/1 Lexend,sans-serif;font-style:normal;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.pinI span{position:absolute;left:34px;top:3px;white-space:nowrap;pointer-events:none;font:700 13px "Noto Sans KR",sans-serif;color:#14171a;background:rgba(255,255,255,.92);padding:1px 6px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.pinI.off{opacity:.3}
+.pinI.off span,.pinI.nol span{display:none}
+.pinI.l span{left:auto;right:34px}
+.meDot{width:16px;height:16px;border-radius:50%;background:#2b8ad6;border:3px solid #fff;box-shadow:0 0 0 6px rgba(43,138,214,.25)}
+.leaflet-popup-content{font:14px/1.5 "Noto Sans KR",sans-serif;margin:12px 14px}
+.leaflet-popup-content b{font-size:15px}
+.leaflet-popup-content a{display:block;margin-top:4px;color:#12507f;font-weight:500}
+.course{list-style:none;margin:0;padding:0}
+.course li{display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid var(--line);scroll-margin-top:56px}
+.num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font:700 15px Lexend,sans-serif}
+.course .t{font:700 14px Lexend,sans-serif;color:var(--mute);white-space:nowrap}
+.course h3{margin:0;font-size:19px;line-height:1.3}
+.course h3 small{font-size:14px;font-weight:400;color:var(--mute);margin-left:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:13px;padding:1px 8px;border-radius:6px;background:var(--card);color:var(--mute)}
+.chip.r{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red);font-weight:500}
+.course p{margin:6px 0 0;font-size:15px}
+.walk{margin-top:10px;background:var(--card);border-radius:10px;padding:10px 12px;font-size:14px}
+.walk .rt{color:var(--mute)}
+.walk .lk{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;font-weight:500}
+.walk button{font:inherit;font-weight:500;border:0;background:none;color:inherit;padding:0;cursor:pointer;text-decoration:underline}
+.checks{display:grid;gap:10px}
+.ck{background:var(--card);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:2.4em minmax(0,1fr);gap:8px}
+.ck .n{font:800 18px Lexend,sans-serif;color:var(--red)}
+.ck h3{margin:0;font-size:17px}
+.ck p{margin:4px 0 0;font-size:15px}
+.train{list-style:none;margin:0;padding:0}
+.train li{display:grid;grid-template-columns:4.2em minmax(0,1fr);gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.train time{font:700 17px Lexend,sans-serif;white-space:nowrap}
+.train small{display:block;color:var(--mute);font-size:14px}
+footer{margin:48px 0 0;padding:22px 0 40px;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
+.toTop{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:900;width:44px;height:44px;border-radius:50%;border:0;background:var(--ink);color:var(--bg);font:700 18px Lexend,sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+@media(prefers-color-scheme:dark){.leaflet-tile-pane{filter:brightness(.75) invert(1) hue-rotate(180deg) contrast(.85)}.pinI span{background:rgba(20,23,26,.9);color:#eef1f4}}
+@media(max-width:420px){.stats{gap:8px}.stat{padding:12px 10px}.tabs button small{display:none}}
+</style>
+</head>
+<body>
+<nav id="top"><div class="col"><a href="#today">Today</a><a href="#route">Route</a><a href="#course">Course</a><a href="#check">Check</a><a href="#train">Train</a></div></nav>
+<div class="col">
+<header class="hero">
+<p class="lab">11.20 금요일 서울 데이트</p>
+<p class="kick">DAY OUT · SEOUL WALK</p>
+<h1>서울 도심,<br>둘이 걷는 하루.</h1>
+<p class="lead">광화문에서 아침을 먹고 궁궐과 북촌, 종로 골목, 청계천을 지나 남산 야경까지. 오송에서 올라와 오송으로 내려가는 하루예요.</p>
+<div class="stats">
+<div class="stat"><b>11.20</b><span>금요일</span></div>
+<div class="stat"><b id="km">–</b><span>걷는 거리</span></div>
+<div class="stat"><b>−3°</b><span>아침 최저 · 맑음</span></div>
+</div>
+<div class="plan" role="group" aria-label="미술관 예약 여부">
+<button id="pA" type="button" aria-pressed="true">A안<small>미술관 예약 됨</small></button>
+<button id="pB" type="button" aria-pressed="false">B안<small>예약 안 됨</small></button>
+</div>
+</header>
+
+<section id="today">
+<h2>Today<i>.</i></h2>
+<p class="hint">파란 구간이 걷는 시간이에요</p>
+<ol class="today" id="todayL"></ol>
+</section>
+
+<section id="route">
+<h2>Route<i>.</i></h2>
+<p class="hint">번호를 누르면 그 지점의 길찾기가 열려요. 오전·오후·저녁 탭에서는 장소 이름도 보여요</p>
+<div class="mapcard">
+<div class="tabs" role="group" aria-label="시간대">
+<button type="button" data-p="all" aria-pressed="true"><b>전체</b><small>하루 코스</small></button>
+<button type="button" data-p="m" aria-pressed="false"><b>오전</b><small>광화문·경복궁</small></button>
+<button type="button" data-p="a" aria-pressed="false"><b>오후</b><small>북촌~청계천</small></button>
+<button type="button" data-p="e" aria-pressed="false"><b>저녁</b><small>명동·남산</small></button>
+</div>
+<div class="mapwrap"><div id="map" role="region" aria-label="코스 지도"></div><button class="me" id="me" type="button" aria-pressed="false">내 위치</button></div>
+<div class="sum">
+<span class="big" id="km2">–</span><span id="sumt" style="color:var(--mute);font-size:15px"></span>
+<div class="leg"><span style="--c:var(--am)">오전</span><span style="--c:var(--pm)">오후</span><span style="--c:var(--ev)">저녁</span><span class="d" style="--c:#7b8590">지하철·케이블카</span></div>
+<p>실선은 지점 사이 이동, 점선은 지점 안에서 걷는 길이에요. 걷는 길은 OpenStreetMap 도보 경로로 그려요(불러오지 못하면 대략적인 선으로 보여요). 네이버 지도 인증이 안 되면 오픈스트리트맵 지도로 자동으로 바뀌어요.</p>
+</div>
+</div>
+</section>
+
+<section id="course">
+<h2>Course<i>.</i></h2>
+<p class="hint">걸어가기는 앞 지점에서 이 지점까지의 길이에요</p>
+<ol class="course" id="courseL"></ol>
+</section>
+
+<section id="check">
+<h2>Check<i>.</i></h2>
+<p class="hint">현장에서 꼭 챙겨요</p>
+<div class="checks">
+<div class="ck"><span class="n">01</span><div><h3>안암 웨이팅은 오전 10시 전후에</h3><p>평일 10:40에 웨이팅을 걸었는데 이미 52번대였다는 후기가 있어요. 테이블링 앱에서 ‘안암’ 원격줄서기 가능 시간을 확인하고, 열리면 바로 등록하세요. 매장 앞 기기로만 받으면 광화문광장을 지나 동십자각에서 삼청로로 꺾어 먼저 등록하고, 국립민속박물관 쪽 동문으로 경복궁에 들어가요.</p></div></div>
+<div class="ck"><span class="n">02</span><div><h3>서도호전은 예약 회차에만 입장</h3><p>취소표가 나오면 13:00~13:30 회차로 잡아요. 현장 회차권은 30~40분 줄이 생겨서 B안으로 바로 넘어가요.</p></div></div>
+<div class="ck"><span class="n">03</span><div><h3>경복궁 무료 개방은 끝났어요</h3><p>11/15까지였어요. 입장료 성인 3,000원(한복 착용 시 무료), 11월 관람 09:00~17:00. 수문장 교대의식은 날씨에 따라 취소될 수 있어요.</p></div></div>
+<div class="ck"><span class="n">04</span><div><h3>21:40 전에는 남산에서 내려와요</h3><p>22:58 KTX. 케이블카 하산 후 명동역에서 4호선 두 정거장이면 서울역이에요. 금요일 저녁 케이블카 줄을 생각해서 22:15 서울역 도착이 기준이에요.</p></div></div>
+</div>
+</section>
+
+<section id="train">
+<h2>Train<i>.</i></h2>
+<p class="hint">기차와 지하철 타는 시각이에요</p>
+<ol class="train">
+<li><time>08:25</time><div>서울역 도착<small>KTX · 오송 → 서울</small></div></li>
+<li><time>08:30</time><div>1호선 서울역 → 시청<small>청량리·소요산 방면 한 정거장, 시청역에서 이삭토스트까지 도보 13분</small></div></li>
+<li><time>19:10</time><div>남산 케이블카 상행<small>하부승강장 소파로 83 · 왕복 15,000원 · 10:00~23:00 운행</small></div></li>
+<li><time>21:40</time><div>케이블카 하행 → 4호선 명동 → 서울역<small>두 정거장. 급하면 택시 약 10분</small></div></li>
+<li><time>22:58</time><div>서울역 출발<small>KTX · 서울 → 오송</small></div></li>
+</ol>
+</section>
+
+<footer>11.20 서울 데이트 코스 · 운영시간과 가격은 2026년 11월 19일 기준 검색 결과예요.<br><span id="mapsrc">지도</span> · 도보 경로 © OpenStreetMap 기여자(FOSSGIS 라우팅) · 현장 상황에 따라 바뀔 수 있어요.</footer>
+</div>
+<button class="toTop" type="button" aria-label="맨 위로" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=udiqde5szf"></script>
+<script>
+{
+const C={SEOUL:[37.5547,126.9707],CITY:[37.5657,126.9769],ISAAC:[37.5712,126.9790],PLAZA:[37.5724,126.9769],GATE:[37.5759,126.9768],GEUN:[37.5786,126.9770],GYEONG:[37.5797,126.9759],HYANG:[37.5826,126.9771],EXIT:[37.5812,126.9798],ANAM:[37.5790,126.9838],MMCA:[37.5786,126.9802],ANGUK:[37.5765,126.9855],SSAM:[37.5743,126.9852],NAK:[37.5737,126.9877],IK:[37.5741,126.9905],SSN:[37.5755,126.9928],SSS:[37.5718,126.9930],JN3:[37.5706,126.9920],GWS:[37.5688,126.9937],GWG:[37.5693,126.9840],EUL:[37.5660,126.9825],MYG:[37.5627,126.9857],CAB:[37.5578,126.9830],TOW:[37.5512,126.9882],MDS:[37.5609,126.9863],HOE:[37.5588,126.9786]};
+// 좌표 수정은 위 C 목록에서 하면 돼요. [위도, 경도]
+const P=[
+{k:'seoul',n:'서울역',per:'m',c:C.SEOUL,t:['08:25','08:25'],sub:'KTX 도착',note:'1호선 시청역 방면(청량리·소요산행)으로 한 정거장. KTX 승강장에서 1호선까지 5분 넘게 걸어요.',chips:[]},
+{k:'isaac',n:'이삭토스트',sub:'광화문점',per:'m',c:C.ISAAC,t:['08:50','08:50'],note:'세종대로23길 5. 매장 좌석이 거의 없는 포장 위주 매장이라 따뜻한 음료를 같이 사요.',chips:['07:00 오픈','포장 위주'],legs:[['sub',['SEOUL','CITY']],['walk',['CITY','ISAAC']]],rt:'서울역 → 1호선 → 시청역 → 이삭토스트'},
+{k:'plaza',n:'광화문광장',sub:'세종대왕상 · 이순신상',per:'m',c:C.PLAZA,t:['09:30','09:30'],note:'다 먹고 광장을 따라 광화문까지 천천히 걸어 올라가요.',chips:[],legs:[['walk',['ISAAC','PLAZA']]],rt:'이삭토스트 → 광화문광장'},
+{k:'gbg',n:'경복궁',sub:'광화문 → 동문(국립민속박물관)',per:'m',c:C.GATE,t:['09:50','09:50'],note:'10:00 광화문~흥례문 사이 수문장 교대의식을 보고 입장. 흥례문 → 근정전 → 경회루 → 향원정 → 건청궁, 나올 때는 안암과 가까운 동쪽 국립민속박물관 쪽으로.',chips:['성인 3,000원','11월 09:00–17:00','교대의식 10:00'],legs:[['walk',['PLAZA','GATE']],['in',['GATE',[37.5768,126.9768],'GEUN','GYEONG','HYANG',[37.5815,126.9785],'EXIT']]],rt:'광화문광장 → 광화문 → 궁 안 관람 → 동문'},
+{k:'anam',n:'안암',sub:'북촌로5길 10 · 점심',per:'m',c:C.ANAM,t:['11:30','11:30'],note:'11:30 오픈, 12:00~13:00 식사 목표. 안암국밥 두 그릇에 바위튀김이나 라임 제육 반접시 하나. 고수는 따로 요청해요.',chips:['금 11:30–15:00','국밥 12,000원','웨이팅 필수'],legs:[['walk',['EXIT','ANAM']]],rt:'경복궁 동문 → 삼청로 → 북촌로5길'},
+{k:'mmca',n:'국립현대미술관',sub:'서울관 · 서도호전',per:'a',plan:'A',c:C.MMCA,t:['13:00',null],note:'예약 회차에 맞춰 약 1시간. 회차 시간에만 입장할 수 있어요.',chips:['서도호전 8,000원','금 10:00–18:00'],legs:[['walk',['ANAM','MMCA']]],rt:'안암 → 국립현대미술관 서울'},
+{k:'nak',n:'낙원악기상가',lab:'l',sub:'도로 위 상가 · 하부 통로',per:'a',c:C.NAK,t:['14:20','13:30'],note:'악기상가를 한 바퀴 돌고 건물 아래 통로도 지나가 봐요. A안 30분, B안 40분.',chips:[],legsA:[['walk',['MMCA','ANGUK','SSAM','NAK']]],legsB:[['walk',['ANAM',[37.5803,126.9846],'ANGUK','SSAM','NAK']]],rtA:'미술관 → 감고당길 → 안국역 → 인사동 → 낙원악기상가',rtB:'안암 → 정독도서관 앞 → 북촌 골목 → 인사동 → 낙원악기상가'},
+{k:'ik',n:'익선동 한옥거리',sub:'카페에서 몸 녹이기',per:'a',c:C.IK,t:['14:55','14:15'],note:'한옥 골목을 걷다가 카페에 들어가 쉬어요. A안 1시간, B안은 디저트까지 1시간 20분.',chips:[],legs:[['walk',['NAK','IK']]],rt:'낙원악기상가 → 익선동'},
+{k:'ssn',n:'서순라길',sub:'종묘 서쪽 담장길',per:'a',c:C.SSN,t:['16:05','15:50'],note:'종묘 돌담을 따라 남쪽으로 끝까지 걸어요. 공방과 카페가 이어져요.',chips:[],legs:[['walk',['IK','SSN']],['in',['SSN','SSS']]],rt:'익선동 → 돈화문로 → 서순라길'},
+{k:'cgc',n:'청계천',sub:'관수교 → 광교 · 해 질 무렵',per:'a',c:C.GWS,t:['16:40','16:40'],note:'17시 20분쯤 해가 지면서 조명이 켜져요. 물길을 따라 서쪽 광교까지 걸어요.',chips:['두 안 합류'],legs:[['walk',['SSS','JN3','GWS']],['in',['GWS',[37.5691,126.9890],'GWG']]],rt:'서순라길 → 종로3가 → 관수교'},
+{k:'myg',n:'명동',sub:'저녁 · 명동교자 본점',per:'e',c:C.MYG,q:'명동교자 본점',t:['17:50','17:50'],note:'칼국수와 만두. 회전이 빨라 줄이 길어도 금방 빠져요. 다른 메뉴를 원하면 케이블카 가는 길의 남산 돈까스 거리도 동선이 맞아요.',chips:['저녁 18:00'],legs:[['walk',['GWG','EUL','MYG']]],rt:'광교 → 을지로입구 → 명동거리'},
+{k:'cab',n:'남산 케이블카',sub:'하부승강장',per:'e',c:C.CAB,t:['19:10','19:10'],note:'명동역 3번 출구 쪽에서 오르막 약 10분, 또는 남산오르미(경사형 엘리베이터). 금요일 저녁 줄 10~30분 생각하기.',chips:['왕복 15,000원','10:00–23:00'],legs:[['walk',['MYG','CAB']]],rt:'명동 → 남산 케이블카 하부승강장'},
+{k:'tow',n:'N서울타워',sub:'남산 정상 야경',per:'e',c:C.TOW,t:['19:30','19:30'],note:'팔각정, 사랑의 자물쇠, 전망 데크. 정상은 바람이 세서 더 추워요. 21:40 전에 하산.',chips:['21:40 하산'],legs:[['sub',['CAB','TOW']]],rt:'케이블카 상행'},
+{k:'end',n:'서울역',sub:'22:58 KTX 오송행',per:'e',end:1,c:C.SEOUL,t:['22:15','22:15'],note:'케이블카로 내려와 명동역에서 4호선 두 정거장. 기차까지 40분 정도 여유.',chips:[],legs:[['walk',['CAB','MDS']],['sub',['MDS','HOE','SEOUL']]],rt:'케이블카 하행 → 명동역 → 4호선 → 서울역'}
+];
+const TODAY={A:[['08:25','서울역 도착 · KTX'],['08:50','아침 · 이삭토스트 광화문점'],['09:30','광화문광장 → 경복궁, 도보 시작',1],['12:00','점심 · 안암'],['13:00','국립현대미술관 서울 (~14:00)'],['14:00','인사동 → 낙원 → 익선동 → 서순라길',1],['16:40','청계천, 해 질 무렵',1],['18:00','저녁 · 명동'],['19:10','남산 케이블카 · N서울타워 야경'],['22:15','서울역 도착'],['22:58','KTX 오송행']],B:[['08:25','서울역 도착 · KTX'],['08:50','아침 · 이삭토스트 광화문점'],['09:30','광화문광장 → 경복궁, 도보 시작',1],['12:00','점심 · 안암'],['13:00','북촌 골목 → 인사동 → 낙원 → 익선동 → 서순라길',1],['16:40','청계천, 해 질 무렵',1],['18:00','저녁 · 명동'],['19:10','남산 케이블카 · N서울타워 야경'],['22:15','서울역 도착'],['22:58','KTX 오송행']]};
+const HEX={m:'#2b8ad6',a:'#12507f',e:'#15181c'};
+const pt=v=>typeof v==='string'?C[v]:v;
+const hav=(a,b)=>{const R=6371000,r=Math.PI/180,dl=(b[0]-a[0])*r,dg=(b[1]-a[1])*r,x=Math.sin(dl/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dg/2)**2;return 2*R*Math.asin(Math.sqrt(x))};
+const plen=a=>{let d=0;for(let i=1;i<a.length;i++)d+=hav(a[i-1],a[i]);return d};
+const fm=m=>m>=1000?(m/1000).toFixed(1)+'km':Math.round(m/10)*10+'m';
+const nm=q=>'https://map.naver.com/p/search/'+encodeURIComponent(q);
+const kw=(a,b)=>'https://map.kakao.com/link/by/walk/'+encodeURIComponent(a.n)+','+a.c[0]+','+a.c[1]+'/'+encodeURIComponent(b.n)+','+b.c[0]+','+b.c[1];
+const kto=b=>'https://map.kakao.com/link/to/'+encodeURIComponent(b.n)+','+b.c[0]+','+b.c[1];
+let plan='A',tab='all';
+try{plan=localStorage.getItem('plan1120')||'A'}catch(e){}
+const vis=()=>P.filter(p=>!p.plan||p.plan===plan);
+const legs=p=>p.legs||(plan==='A'?p.legsA:p.legsB)||[];
+const rt=p=>p.rt||(plan==='A'?p.rtA:p.rtB)||'';
+const tm=p=>p.t[plan==='A'?0:1];
+const nums=()=>{let i=0;const m={};vis().forEach(p=>{if(!p.end)m[p.k]=++i});return m};
+/* 도보 경로: OSM 도보 라우팅으로 실제 길을 받아오고, 실패하면 직선으로 */
+const RC={};try{Object.assign(RC,JSON.parse(localStorage.getItem('route1120')||'{}'))}catch(e){}
+const key=a=>a.map(v=>pt(v).join(',')).join(';');
+const geom=l=>{if(l[0]==='walk'){const r=RC[key(l[1])];if(r)return r}return{c:l[1].map(pt),d:plen(l[1].map(pt))*(l[0]==='walk'?1.25:1.05)}};
+const fetchRoute=async l=>{const k=key(l[1]);if(RC[k])return;
+const url='https://routing.openstreetmap.de/routed-foot/route/v1/driving/'+l[1].map(v=>{const c=pt(v);return c[1]+','+c[0]}).join(';')+'?overview=full&geometries=geojson';
+try{const r=await fetch(url);if(!r.ok)return;const j=await r.json();const g=j.routes&&j.routes[0];if(!g)return;RC[k]={c:g.geometry.coordinates.map(c=>[c[1],c[0]]),d:g.distance};try{localStorage.setItem('route1120',JSON.stringify(RC))}catch(e){}}catch(e){}};
+const walkM=p=>legs(p).filter(l=>l[0]!=='sub').reduce((s,l)=>s+geom(l).d,0);
+const NAVER_ID='udiqde5szf';
+const HEXL={m:'#2b8ad6',a:'#12507f',e:'#15181c',sub:'#7b8590'};
+const LCSS='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',LJS='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+const srcEl=document.getElementById('mapsrc');
+let M=null,meW=null;
+const pinHTML=(p,on,N)=>`<div class="pinI${on?'':' off'}${tab==='all'?' nol':''}${p.lab==='l'?' l':''}"><div><i style="background:${HEX[p.per]}">${p.end?'끝':N[p.k]}</i><span>${p.n}</span></div></div>`;
+const popHTML=(p,prev)=>`<b>${p.end?'끝':nums()[p.k]+'.'} ${p.n}</b><br><span style="color:#6b7480">${tm(p)} · ${p.sub||''}</span>${prev?`<a href="${kw(prev,p)}" target="_blank" rel="noopener">${prev.n}에서 걸어가기 ↗</a>`:''}<a href="${kto(p)}" target="_blank" rel="noopener">내 위치에서 길찾기 ↗</a><a href="${nm(p.q||p.n)}" target="_blank" rel="noopener">네이버 지도에서 보기 ↗</a><a href="#c-${p.k}">코스 설명 보기</a>`;
+/* 네이버 지도 */
+const NV={kind:'naver',ov:[],pins:{},meM:null,
+init(){const n=naver.maps;this.map=new n.Map('map',{center:new n.LatLng(37.568,126.984),zoom:14,zoomControl:true,zoomControlOptions:{position:n.Position.TOP_LEFT},scrollWheel:false,mapDataControl:false,scaleControl:false});this.iw=new n.InfoWindow({content:'',borderWidth:0,disableAnchor:false,backgroundColor:'#fff',pixelOffset:new n.Point(0,-14)});n.Event.addListener(this.map,'click',()=>this.iw.close());srcEl.textContent='지도 © NAVER Corp.'},
+ll:c=>new naver.maps.LatLng(c[0],c[1]),
+clear(){this.ov.forEach(o=>o.setMap(null));this.ov=[];this.pins={};this.iw.close()},
+line(cs,kind,per,on){this.ov.push(new naver.maps.Polyline({map:this.map,path:cs.map(this.ll),strokeColor:HEXL[kind==='sub'?'sub':per],strokeWeight:kind==='sub'?3:5,strokeOpacity:on?1:.2,strokeStyle:kind==='walk'?'solid':kind==='in'?'shortdot':'shortdash',strokeLineCap:'round',strokeLineJoin:'round',clickable:false}))},
+open(m,pop){this.iw.setContent('<div class="nvpop">'+pop+'</div>');this.iw.open(this.map,m)},
+pin(p,html,on,pop){const m=new naver.maps.Marker({map:this.map,position:this.ll(p.c),icon:{content:html,anchor:new naver.maps.Point(14,14)},zIndex:on?100:10,title:p.n});naver.maps.Event.addListener(m,'click',()=>this.open(m,pop));this.ov.push(m);this.pins[p.k]={m,pop}},
+fit(b){if(!b.length)return;let s=90,n=-90,w=180,e=-180;b.forEach(c=>{s=Math.min(s,c[0]);n=Math.max(n,c[0]);w=Math.min(w,c[1]);e=Math.max(e,c[1])});this.map.fitBounds(new naver.maps.LatLngBounds(this.ll([s,w]),this.ll([n,e])),{top:40,right:40,bottom:40,left:40});if(this.map.getZoom()>17)this.map.setZoom(17)},
+view(c,z){this.map.setCenter(this.ll(c));this.map.setZoom(z)},
+focus(k,c){this.view(c,17);const q=this.pins[k];if(q)this.open(q.m,q.pop)},
+me(c){if(!this.meM)this.meM=new naver.maps.Marker({map:this.map,position:this.ll(c),icon:{content:'<div class="meDot"></div>',anchor:new naver.maps.Point(8,8)},zIndex:200});else this.meM.setPosition(this.ll(c))},
+meOff(){if(this.meM){this.meM.setMap(null);this.meM=null}}};
+/* 네이버 인증이 안 되면 쓰는 오픈스트리트맵 */
+const LF={kind:'leaflet',pins:{},meM:null,
+init(){this.map=L.map('map',{scrollWheelZoom:false}).setView([37.568,126.984],14);L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>'}).addTo(this.map);this.layer=L.layerGroup().addTo(this.map);srcEl.textContent='지도 © OpenStreetMap 기여자 © CARTO'},
+clear(){this.layer.clearLayers();this.pins={}},
+line(cs,kind,per,on){L.polyline(cs,{className:'ln '+(kind==='sub'?'sub':per)+(on?'':' off'),weight:kind==='sub'?3:5,dashArray:kind==='walk'?null:kind==='in'?'2 8':'8 7',interactive:false}).addTo(this.layer)},
+pin(p,html,on,pop){const m=L.marker(p.c,{icon:L.divIcon({className:'',html,iconSize:[28,28],iconAnchor:[14,14]}),zIndexOffset:on?1000:0,title:p.n}).addTo(this.layer);m.bindPopup(pop,{offset:[0,-10]});this.pins[p.k]=m},
+fit(b){if(b.length)this.map.fitBounds(b,{padding:[36,36],maxZoom:17})},
+view(c,z){this.map.setView(c,z)},
+focus(k,c){this.view(c,17);const m=this.pins[k];if(m)m.openPopup()},
+me(c){if(!this.meM)this.meM=L.marker(c,{icon:L.divIcon({className:'',html:'<div class="meDot"></div>',iconSize:[16,16],iconAnchor:[8,8]}),zIndexOffset:2000}).addTo(this.map);else this.meM.setLatLng(c)},
+meOff(){if(this.meM){this.map.removeLayer(this.meM);this.meM=null}}};
+const drawMap=fit=>{if(!M)return;M.clear();const V=vis(),N=nums(),inTab=p=>tab==='all'||p.per===tab,b=[];
+V.forEach(p=>{const on=inTab(p);legs(p).forEach(l=>{const g=geom(l);M.line(g.c,l[0],p.per,on);if(on&&(l[0]!=='sub'||tab!=='all'))g.c.forEach(c=>b.push(c))})});
+V.forEach((p,i)=>{const on=inTab(p);if(p.end&&tab!=='e')return;if(on)b.push(p.c);M.pin(p,pinHTML(p,on,N),on,popHTML(p,V[i-1]))});
+if(fit)M.fit(b)};
+const loadLF=()=>new Promise((ok,no)=>{if(window.L)return ok();const l=document.createElement('link');l.rel='stylesheet';l.href=LCSS;document.head.appendChild(l);const s=document.createElement('script');s.src=LJS;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+const useLF=async()=>{if(M===LF)return;M=null;try{await loadLF()}catch(e){document.getElementById('map').innerHTML='<p style="padding:20px;color:#6b7480">지도를 불러오지 못했어요. 인터넷 연결을 확인해 주세요.</p>';return}
+const o=document.getElementById('map'),n=o.cloneNode(false);o.replaceWith(n);NV.meM=null;M=LF;M.init();drawMap(true)};
+window.navermap_authFailure=()=>{useLF()};
+const render=fit=>{
+const V=vis(),N=nums();
+const tot=V.reduce((s,p)=>s+walkM(p),0);
+document.getElementById('km').textContent=(tot/1000).toFixed(1)+'km';
+const tabM=V.filter(p=>tab==='all'||p.per===tab).reduce((s,p)=>s+walkM(p),0);
+document.getElementById('km2').textContent=(tabM/1000).toFixed(1)+' km';
+document.getElementById('sumt').textContent=({all:'하루 코스',m:'오전',a:'오후',e:'저녁'})[tab]+' · 걷는 시간 약 '+Math.round(tabM/1000*15)+'분 (지점 안 산책 포함)';
+document.getElementById('todayL').innerHTML=TODAY[plan].map(r=>`<li class="${r[2]?'w':''}"><time>${r[0]}</time><span>${r[1]}</span></li>`).join('');
+document.getElementById('courseL').innerHTML=V.map((p,i)=>{const prev=V[i-1],w=walkM(p),hasSub=legs(p).some(l=>l[0]==='sub');
+return `<li id="c-${p.k}"><span class="num" style="background:${HEX[p.per]}">${p.end?'끝':N[p.k]}</span><div><span class="t">${tm(p)}</span><h3>${p.n}${p.sub?`<small>${p.sub}</small>`:''}</h3>${p.chips.length?`<div class="chips">${p.chips.map(c=>`<span class="chip ${/필수|하산|오픈/.test(c)?'r':''}">${c}</span>`).join('')}</div>`:''}<p>${p.note}</p><div class="walk">${prev?`<div class="rt">${rt(p)} · ${hasSub?'도보 ':''}약 ${fm(w)}</div>`:''}<div class="lk">${prev?`<a href="${kw(prev,p)}" target="_blank" rel="noopener">걸어가기 ↗</a>`:''}<a href="${kto(p)}" target="_blank" rel="noopener">내 위치에서 ↗</a><a href="${nm(p.q||p.n)}" target="_blank" rel="noopener">네이버 지도 ↗</a><button type="button" data-go="${p.k}">지도에서 보기</button></div></div></div></li>`}).join('');
+document.getElementById('pA').setAttribute('aria-pressed',plan==='A');document.getElementById('pB').setAttribute('aria-pressed',plan==='B');
+document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===tab));
+drawMap(fit);
+};
+document.getElementById('courseL').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b||!M)return;const p=vis().find(x=>x.k===b.dataset.go);tab='all';render(false);document.getElementById('route').scrollIntoView({behavior:'smooth'});setTimeout(()=>{if(M)M.focus(p.k,p.c)},450)});
+const setPlan=v=>{plan=v;try{localStorage.setItem('plan1120',v)}catch(e){}render(true)};
+document.getElementById('pA').addEventListener('click',()=>setPlan('A'));
+document.getElementById('pB').addEventListener('click',()=>setPlan('B'));
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.p;render(true)}));
+const meB=document.getElementById('me');
+meB.addEventListener('click',()=>{if(!M)return;
+if(meW!==null){navigator.geolocation.clearWatch(meW);meW=null;M.meOff();meB.setAttribute('aria-pressed','false');meB.textContent='내 위치';return}
+if(!navigator.geolocation){meB.textContent='위치 사용 불가';return}
+meB.textContent='찾는 중…';let first=true;
+meW=navigator.geolocation.watchPosition(pos=>{if(!M)return;const c=[pos.coords.latitude,pos.coords.longitude];M.me(c);
+if(first){M.view(c,16);first=false}meB.setAttribute('aria-pressed','true');meB.textContent='내 위치 끄기'},
+()=>{meB.textContent='위치 권한을 허용해 주세요';meW=null},{enableHighAccuracy:true,maximumAge:10000})});
+if(window.naver&&naver.maps){try{M=NV;M.init()}catch(e){M=null;useLF()}}else{useLF()}
+render(true);
+/* 도보 경로를 순서대로 받아와서 다시 그림 */
+(async()=>{const all=[];P.forEach(p=>[p.legs,p.legsA,p.legsB].forEach(ls=>(ls||[]).forEach(l=>{if(l[0]==='walk')all.push(l)})));
+for(const l of all){await fetchRoute(l)}render(false)})();
+}
+</script>
+</body>
+</html>
